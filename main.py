@@ -5,6 +5,9 @@ parser = argparse.ArgumentParser("Our program")
 
 parser.add_argument('--input', '-i')
 parser.add_argument('--output', '-o')
+parser.add_argument('--column', '-c')
+parser.add_argument('--desc', action='store_true')  # TODO: add sorting order
+
 
 cmd_args = parser.parse_args()
 
@@ -29,7 +32,7 @@ with open(in_file, 'r') as f_in:
             employee = {column: split_line[i] for i, column in enumerate(columns)}
             employees.append(employee)
 
-sorted_employees = sorted(employees, key=lambda item: item[columns[0]])
+sorted_employees = sorted(employees, key=lambda item: item.get(cmd_args.column, columns[0]))
 
 with open(out_file, 'w') as f_out:
     f_out.write("%s\n" % ','.join(columns))
